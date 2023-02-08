@@ -39,7 +39,7 @@ Most Scoop search systems provide results for a single keyword. SS can search co
 ### - 🔧 **Complex REGEX search patterns for advanced users**
 <br/>
 
-**SS** is also cabable of extended **REGEX** pattern seaches, accepting even multiple regex patterns.
+**SS** also supports extended **REGEX** pattern seaches, accepting even multiple regex patterns.
 
 <br/>
 
