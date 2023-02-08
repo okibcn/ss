@@ -1,4 +1,4 @@
-#   Scoop Super Search v1.0 2023.02.07
+#   Scoop Super Search v1.01 2023.02.08
 #   (C) 2023 Oscar Lopez
 #   For more information visit: https://github.com/okibcn/ss"
 
@@ -16,7 +16,7 @@ function ss {
                 'n' { $oName = $true  ; break }
                 'l' { $oLast = $true  ; break }
                 'h' { $oHelp = $true  ; break }
-                'e' { $oSimple = $true ; break }
+                'e' { $oRegex = $true ; break }
                 'r' { $oRaw = $true  ; break }
                 's' { 
                     $oExact = $true
@@ -79,8 +79,8 @@ function ss {
         $table = (echo '"Name","Version","Date","Bucket","Description"'$csv) | ConvertFrom-Csv
     }
     else {
-        # regex search Yes/No
-        if (!$oSimple) {
+        # prefilter non regex search
+        if (!$oRegex) {
             $pattern | % { $csv = $csv | Select-String -pattern "$_" -raw }
         }
         if (!$csv) { return }
