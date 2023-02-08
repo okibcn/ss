@@ -4,6 +4,8 @@
 
 Scoop Super Search, instantaneous results, UTF-8 and regex compatible. The fastest search engine for Scoop.
 
+(Do you like it? give it a ⭐)
+
 <br/>
 <img width="1107" alt="image" src="https://user-images.githubusercontent.com/22417711/217578903-bfd17b11-9be4-41af-9f7f-6bd45a1a2aac.png">
 
@@ -17,7 +19,16 @@ ____
 
 <br/>
 
-**Scoop Super Search** is capable of searching in more than 800 buckets and 52,000 app manifests in internet. It uses the lightning fast ScoopMaster database to provide intantaneous results in less than 500 ms.
+**Scoop Super Search** is capable of searching in more than 800 buckets and 52,000 app manifests in internet. It uses the lightning fast [ScoopMaster database](https://github.com/okibcn/ScoopMaster) to provide intantaneous results in less than 500 ms.
+
+<br/>
+
+
+### - ⭐ **Always updated**
+
+<br/>
+
+**Scoop Super Search** uses the [ScoopMaster database](https://github.com/okibcn/ScoopMaster), ensuring the latest results and highest versions for every app in Scoop. The database is updated every 30 minutes, ensuring fresh results, newer than even the official scoop app database.
 
 <br/>
 
