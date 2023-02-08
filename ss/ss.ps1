@@ -37,7 +37,7 @@ function ss {
         Write-Host "
  Usage: ss [OPTIONS] [Patterns]
 
- ss searches in all the known buckets at a lighning speed. It not only searhes 
+ ss searches in all the known buckets at a lighning speed. It not only searches 
  in the name field, but also in the desscription. Regex and UTF-8 compatible.
 
  Options:
