@@ -1,4 +1,4 @@
-# SS (Scoop Super Search) 
+# SS (Scoop **Super Search**) 
 
 <br/>
 
@@ -9,11 +9,11 @@ Scoop Super Search, instantaneous results, UTF-8 and regex compatible. The faste
 
 ____
 
-## FEATURES
+## **FEATURES**
 
 <br/>
 
-### - 🛸 'Outta This World' speed
+### - 🛸 **'Outta This World' speed**
 
 <br/>
 
@@ -22,21 +22,21 @@ ____
 <br/>
 
 
-### - 🔍 Searches in names AND descriptions improving the search flexibility.
+### - 🔍 **Searches in names AND descriptions improving the search flexibility.**
 <br/>
 Most Scoop search systems such as [Scoop.sh](http://scoop.sh) or [Scoop-Directory](https://rasa.github.io/scoop-directory/search) provide results only referred to the app name. SS can search also in the app descriptions.
 
 <br/>
 
 
-### - 🔍&🔍 Match All keywords capability. 
+### - 🔍&🔍 **Match All keywords capability.** 
 <br/>
 Most Scoop search systems provide results for a single keyword. SS can search combinations of OR and AND.
 
 <br/>
 
 
-### - 🔧 Complex REGEX search patterns for advanced users
+### - 🔧 **Complex REGEX search patterns for advanced users**
 <br/>
 
 **SS** is also cabable of extended **REGEX** pattern seaches, accepting even multiple regex patterns.
@@ -44,7 +44,7 @@ Most Scoop search systems provide results for a single keyword. SS can search co
 <br/>
 
 
-### - (音乐) UTF-8 compatible
+### - **(音乐) UTF-8 compatible**
 <br/>
 
 **SS** accepts searches in UTF-8 encoding, supporting searches in descriptions when the language uses suplemental Unicode pages. Please note that this feature requires a UTF-8 capable terminal such as Windows Terminal.
@@ -52,7 +52,7 @@ Most Scoop search systems provide results for a single keyword. SS can search co
 <br/>
 
 
-### - 📝 Last-manifest filter
+### - 📝 **Last-manifest filter**
 <br/>
 
 Typical search utilities provide only the list of matches including all the versions and all the manifests for that app. **SS** can also filter out all the noise in the report, displaying only the latests manifest of the highest version of each app.
@@ -60,7 +60,7 @@ Typical search utilities provide only the list of matches including all the vers
 <br/>
 
 
-### - 📝 Interoperability with other PowerShell scripts
+### - 📝 **Interoperability with other PowerShell scripts**
 <br/>
 
 **SS** can provide the output as a PSObject format so other PowerShell utilities could use the data for other tasks.
@@ -71,8 +71,7 @@ ____
 
 <br/>
 
-## INSTALLATION
-
+## **INSTALLATION**
 <br/>
 
 This app is a CLI utility for the Scoop framework and requires [Scoop ackage Manager](http://scoop.sh) as a pre-requisite.
@@ -104,7 +103,7 @@ ____
 
 <br/>
 
-## USAGE
+## **USAGE**
 
 <br/>
 
@@ -129,7 +128,7 @@ ____
 
 <br/>
 
-## EXAMPLES
+## **EXAMPLES**
 
 <br/>
 
