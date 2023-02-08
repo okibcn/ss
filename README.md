@@ -78,11 +78,11 @@ This app is a CLI utility for the Scoop framework and requires [Scoop ackage Man
 
 From there the installation is straightforward.
 
-1. Add the home bucket for this utility:
+1. Add the definitive Scoop Master meta-bucket with all the scoop apps:
 ```pwsh
-scoop bucket add .oki. http://github.com/okibcn/Bucket
+scoop bucket add .sm http://github.com/okibcn/ScoopMaster
 ```
-2. Install the app:
+2. Install **SS**:
 ```pwsh
 scoop install ss
 ```
@@ -162,5 +162,5 @@ ss -l 音乐
 ```
 - stores in the `$apps` variable a PSObject with all the Scoop manifests — more than 52,000.
 ```pwsh
-`$apps = ss -r .* 
+$apps = ss -r .* 
 ```
