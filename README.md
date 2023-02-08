@@ -5,7 +5,7 @@
 Scoop Super Search, instantaneous results, UTF-8 and regex compatible. The fastest search engine for Scoop.
 
 <br/>
-
+<img width="1107" alt="image" src="https://user-images.githubusercontent.com/22417711/217578903-bfd17b11-9be4-41af-9f7f-6bd45a1a2aac.png">
 
 ____
 
