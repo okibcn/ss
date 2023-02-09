@@ -1,4 +1,4 @@
-#   Scoop Super Search v2.0 2023.02.08
+#   Scoop Super Search v2.01 2023.02.08
 #   (C) 2023 Oscar Lopez
 #   For more information visit: https://github.com/okibcn/ss"
 
@@ -30,7 +30,7 @@ function ss {
         }
     }
     if (($oHelp) -OR (!$oRaw)) {
-        Write-Host " Scoop Super Search v2.0 2023.02.08
+        Write-Host " Scoop Super Search v2.01 2023.02.08
  (C) 2023 Oscar Lopez
  ss -h for help. For more information visit: https://github.com/okibcn/ss"
     }
@@ -70,6 +70,7 @@ function ss {
         aria2c --allow-overwrite=true https://github.com/okibcn/ScoopMaster/releases/download/Databases/AllAppsDB.7z -d "$env:TEMP" | Out-Null
     }
     $csv = 7z e -so $DBfile | select-object -skip 1
+    $nManifests=$csv.count
     if ($oLast) {
         $csv = $csv | Select-String -Pattern "okibcn/ScoopMaster" -raw
     }
