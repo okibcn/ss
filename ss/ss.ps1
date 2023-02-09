@@ -1,10 +1,11 @@
-#   Scoop Super Search v1.01 2023.02.08
+#   Scoop Super Search v2.0 2023.02.08
 #   (C) 2023 Oscar Lopez
 #   For more information visit: https://github.com/okibcn/ss"
 
 
 ## Finds texts in local scoop database
 function ss {
+    $tac=get-date
     $cNormal = "$([char]27)[37m"  # White
     $cMatch = "$([char]27)[33m"  # Yellow
     $cBucket = "$([char]27)[36m"  # Cyan
@@ -29,7 +30,7 @@ function ss {
         }
     }
     if (($oHelp) -OR (!$oRaw)) {
-        Write-Host " Scoop Super Search v0.1 2023.02.07
+        Write-Host " Scoop Super Search v2.0 2023.02.08
  (C) 2023 Oscar Lopez
  ss -h for help. For more information visit: https://github.com/okibcn/ss"
     }
@@ -114,6 +115,10 @@ function ss {
             }
         }
     }
+    $tic=get-date
+    #PRINT OUTPUT
     $table | Select-Object Name, Version, Bucket, Description |  Format-Table
+    Write-Host "Found $($table.count) matches out of $nManifests online manifests in $([int]($tic-$tac).Milliseconds) ms"
+    
 }
 return ss @args
