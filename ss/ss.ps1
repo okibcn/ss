@@ -1,4 +1,4 @@
-#   Scoop Super Search v2.01 2023.02.08
+#   Scoop Super Search v3.0 2023.02.09
 #   (C) 2023 Oscar Lopez
 #   For more information visit: https://github.com/okibcn/ss"
 
@@ -8,7 +8,8 @@ function ss {
     $tac=get-date
     $cNormal = "$([char]27)[37m"  # White
     $cMatch = "$([char]27)[33m"  # Yellow
-    $cBucket = "$([char]27)[36m"  # Cyan
+    $cOfficial = "$([char]27)[0;35m"  # Cyan
+    $cSMaster = "$([char]27)[36m"  # Purple
     $oHelp = $oName = $oExact = $oLast = $oRaw = $false
     $pattern = foreach ($arg in $args) {
         $arg = [string]$arg
@@ -19,6 +20,7 @@ function ss {
                 'h' { $oHelp = $true  ; break }
                 'e' { $oRegex = $true ; break }
                 'r' { $oRaw = $true  ; break }
+                'o' { $oOfficial = $true  ; break }
                 's' { 
                     $oExact = $true
                     $oName = $true 
@@ -30,16 +32,17 @@ function ss {
         }
     }
     if (($oHelp) -OR (!$oRaw)) {
-        Write-Host " Scoop Super Search v2.01 2023.02.08
+        Write-Host " Scoop Super Search v3.0 2023.02.09
  (C) 2023 Oscar Lopez
  ss -h for help. For more information visit: https://github.com/okibcn/ss"
     }
     if (($oHelp) -OR ($pattern.count -eq 0)) {
         Write-Host "
- Usage: ss [OPTIONS] [Patterns]
+ Usage: ss [[[-n] [-s|-e] [-l] [-o] [-r]]|-h] [Search_Patterns]
 
  ss searches in all the known buckets at a lighning speed. It not only searches 
  in the name field, but also in the desscription. Regex and UTF-8 compatible.
+ If you use more than one pattern, ss returns manifests matching all of them.
 
  Options:
 
@@ -47,9 +50,10 @@ function ss {
      -n   Searches only in the name field.
      -s   Simple search. searches an exact name match (implies -n).
      -e   Full expanded regex search.
-     -l   Search latest versions only
+     -l   Search latest versions only.
+     -o   Search only in official buckets.
      -r   raw, no color and no header. Outputs data as a PowerShell object.
-     -h   Prints this help
+     -h   Shows this help.
 
  Examples:
 
@@ -73,6 +77,9 @@ function ss {
     $nManifests=$csv.count
     if ($oLast) {
         $csv = $csv | Select-String -Pattern "okibcn/ScoopMaster" -raw
+    }
+    if ($oOfficial) {
+        $csv = $csv | Select-String -Pattern '"Scoopinstaller/' -raw
     }
     if ($oExact) {
         # Exact name match
@@ -106,6 +113,7 @@ function ss {
     if ($oRaw) {
         return ($table | Select-Object Name, Version, Bucket, Description) 
     }
+
     # Colorize if we are not in raw mode
     $pattern | % {
         $pattern_ = $_
@@ -116,10 +124,18 @@ function ss {
             }
         }
     }
+    Foreach ($line in $table) {
+        $line.Bucket = $line.Bucket -Replace "(^.*/ScoopInstaller/.*)", "$cOfficial`$1$cNormal"
+        $line.Bucket = $line.Bucket -Replace "(^.*/okibcn/ScoopMaster)", "$cSMaster`$1$cNormal"
+    }
+
     $tic=get-date
+
     #PRINT OUTPUT
     $table | Select-Object Name, Version, Bucket, Description |  Format-Table
-    Write-Host "Found $($table.count) matches out of $nManifests online manifests in $([int]($tic-$tac).Milliseconds) ms"
+    Write-Host "Legend: $cMatch Search Match$cNormal  - $cOfficial Official Bucket$cNormal  - $cSMaster Most recent Manifest$cNormal"
+    Write-Host "Found $cMatch$($table.count)$cNormal matches out of $cMatch$nManifests$cNormal online manifests in $cMatch$([int]($tic-$tac).Milliseconds)$cNormal ms"
+
     
 }
 return ss @args
