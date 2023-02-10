@@ -58,28 +58,28 @@ Most Scoop search systems provide results for a single keyword. SS can search co
 
 <br/>
 
-### - 📝 **Last-manifest filter**
+### - 🕒 **Last-manifest filter**
 <br/>
 
 Typical search utilities provide only the list of matches including all the versions and all the manifests for that app. **SS** can also filter out all the noise in the report, displaying only the latests manifest of the highest version of each app.
 
 <br/>
 
-### - 📝 **Color coding for quick reference**
+### - 🎨 **Color coding for quick reference**
 <br/>
 
 The result is displated with color coding for easy identigication of the matched words, the official buckets, and the bucket of the newer manifest available for each app.
 
 <br/>
 
-### - 📝 **Interoperability with other PowerShell scripts**
+### - 🪟 **Interoperability with other PowerShell scripts**
 <br/>
 
 **SS** can provide the output as a PSObject format so other PowerShell utilities could use the data for other tasks.
 
 <br/>
 
-### - 📝 **Homepage information**
+### - 🌐 **Homepage information**
 <br/>
 
 **SS** has an option that displays the homepage of each manifest. That makes easier to reasearch the source of the app, find details about it, etc.
