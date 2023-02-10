@@ -1,16 +1,16 @@
-#   Scoop Super Search v3.0 2023.02.09
+#   Scoop Super Search v4.0 2023.02.09
 #   (C) 2023 Oscar Lopez
 #   For more information visit: https://github.com/okibcn/ss"
 
 
 ## Finds texts in local scoop database
 function ss {
-    $tac=get-date
+    $tac = get-date
     $cNormal = "$([char]27)[37m"  # White
     $cMatch = "$([char]27)[33m"  # Yellow
     $cOfficial = "$([char]27)[0;35m"  # Cyan
     $cSMaster = "$([char]27)[36m"  # Purple
-    $oHelp = $oName = $oExact = $oLast = $oRaw = $false
+    $oHelp = $oName = $oExact = $oLast = $oRaw = $oRegex = $oOfficial = $oPage = $false
     $pattern = foreach ($arg in $args) {
         $arg = [string]$arg
         if (($arg[0] -eq '-') -AND ($arg[2] -eq $null)) {
@@ -21,6 +21,7 @@ function ss {
                 'e' { $oRegex = $true ; break }
                 'r' { $oRaw = $true  ; break }
                 'o' { $oOfficial = $true  ; break }
+                'p' { $oPage = $true  ; break }
                 's' { 
                     $oExact = $true
                     $oName = $true 
@@ -32,13 +33,13 @@ function ss {
         }
     }
     if (($oHelp) -OR (!$oRaw)) {
-        Write-Host " Scoop Super Search v3.0 2023.02.09
+        Write-Host " Scoop Super Search v4.0 2023.02.09
  (C) 2023 Oscar Lopez
  ss -h for help. For more information visit: https://github.com/okibcn/ss"
     }
     if (($oHelp) -OR ($pattern.count -eq 0)) {
         Write-Host "
- Usage: ss [[[-n] [-s|-e] [-l] [-o] [-r]]|-h] [Search_Patterns]
+ Usage: ss [ [ [-n] [ -s|-e ] [-l] [-o] [-r] [-p] ] | -h ] [Search_Patterns]
 
  ss searches in all the known buckets at a lighning speed. It not only searches 
  in the name field, but also in the desscription. Regex and UTF-8 compatible.
@@ -52,6 +53,7 @@ function ss {
      -e   Full expanded regex search.
      -l   Search latest versions only.
      -o   Search only in official buckets.
+     -p   Shows homepage for each manifest.
      -r   raw, no color and no header. Outputs data as a PowerShell object.
      -h   Shows this help.
 
@@ -73,8 +75,8 @@ function ss {
     if ((-NOT (test-path $DBfile)) -OR (((Get-Date) - (gci $DBfile).LastWriteTime).Minutes -ge 30)) {
         aria2c --allow-overwrite=true https://github.com/okibcn/ScoopMaster/releases/download/Databases/AllAppsDB.7z -d "$env:TEMP" | Out-Null
     }
-    $csv = 7z e -so $DBfile | select-object -skip 1
-    $nManifests=$csv.count
+    $csv = 7z e -so $DBfile AllAppsDB.csv | select-object -skip 1
+    $nManifests = $csv.count
     if ($oLast) {
         $csv = $csv | Select-String -Pattern "okibcn/ScoopMaster" -raw
     }
@@ -85,7 +87,7 @@ function ss {
         # Exact name match
         $csv = $csv | Select-String -Pattern "^`"$pattern`"" -raw
         if (!$csv) { return }
-        $table = (echo '"Name","Version","Date","Bucket","Description"'$csv) | ConvertFrom-Csv
+        $table = (echo '"Name","Version","Date","Bucket","Description","Homepage"'$csv) | ConvertFrom-Csv
     }
     else {
         # prefilter non regex search
@@ -93,7 +95,7 @@ function ss {
             $pattern | % { $csv = $csv | Select-String -pattern "$_" -raw }
         }
         if (!$csv) { return }
-        $table = (echo '"Name","Version","Date","Bucket","Description"'$csv) | ConvertFrom-Csv
+        $table = (echo '"Name","Version","Date","Bucket","Description","Homepage"'$csv) | ConvertFrom-Csv
         if ($oName) {
             # search name field only
             $pattern | % { 
@@ -109,9 +111,10 @@ function ss {
             }
         }
     }
+    # $table | % {$_.Date = Get-Date $_.Date}
     $table | % { $_.bucket = "http://github.com/$($_.bucket)" }
     if ($oRaw) {
-        return ($table | Select-Object Name, Version, Bucket, Description) 
+        return ($table | Select-Object Name, Version, Date, Homepage, Bucket, Description) 
     }
 
     # Colorize if we are not in raw mode
@@ -128,14 +131,16 @@ function ss {
         $line.Bucket = $line.Bucket -Replace "(^.*/ScoopInstaller/.*)", "$cOfficial`$1$cNormal"
         $line.Bucket = $line.Bucket -Replace "(^.*/okibcn/ScoopMaster)", "$cSMaster`$1$cNormal"
     }
-
-    $tic=get-date
+    $tic = get-date
 
     #PRINT OUTPUT
-    $table | Select-Object Name, Version, Bucket, Description |  Format-Table
+    if ($oPage) {
+        $table | Select-Object Name, Version, Homepage, Bucket, Description |  Format-Table
+    }
+    else {
+        $table | Select-Object Name, Version, Bucket, Description |  Format-Table
+    }
     Write-Host "Legend: $cMatch Search Match$cNormal  - $cOfficial Official Bucket$cNormal  - $cSMaster Most recent Manifest$cNormal"
     Write-Host "Found $cMatch$($table.count)$cNormal matches out of $cMatch$nManifests$cNormal online manifests in $cMatch$([int]($tic-$tac).Milliseconds)$cNormal ms"
-
-    
 }
 return ss @args
