@@ -7,7 +7,7 @@ Scoop Super Search, instantaneous results, UTF-8 and regex compatible. The faste
 (Do you like it? give it a ⭐)
 
 <br/>
-<img width="1118" alt="image" src="https://user-images.githubusercontent.com/22417711/217725165-d248dfc4-9577-40e7-bd48-9950c4df634b.png">
+<img width="1107" alt="image" src="https://user-images.githubusercontent.com/22417711/217981368-9fd7f08d-048b-4e70-b2ab-7eca9a965ea1.png">
 
 ____
 
@@ -118,9 +118,12 @@ ____
 
 <br/>
 
-Usage: ss [OPTIONS] [Patterns]
+Usage: ss [ [ [ -n ] [ -s | -e ] [ -l ] [ -o ] [ -r ] ] | -h ] [Search_Patterns]
 
- **SS** searches in all the known buckets at a lighning speed. It not only searches in the name field, but also in the desscription. Regex and UTF-8 compatible.
+ **SS** searches in all the known buckets at a lighning speed. It not only searches
+ in the name field, but also in the desscription. Regex and UTF-8 compatible. 
+ 
+ If you use more than one pattern, **SS** returns manifests matching all of them.
 ```
  Options:
 
@@ -128,9 +131,10 @@ Usage: ss [OPTIONS] [Patterns]
      -n   Searches only in the name field.
      -s   Simple search. searches an exact name match (implies -n).
      -e   Full expanded regex search.
-     -l   Search latest versions only
+     -l   Search latest versions only.
+     -o   Search only in official buckets.
      -r   raw, no color and no header. Outputs data as a PowerShell object.
-     -h   Prints this help
+     -h   Shows this help.
 ```
 
 <br/>
