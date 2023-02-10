@@ -23,29 +23,26 @@ ____
 
 <br/>
 
-
 ### - ⭐ **Always updated**
-
 <br/>
 
 **Scoop Super Search** uses the [ScoopMaster database](https://github.com/okibcn/ScoopMaster), ensuring the latest results and highest versions for every app in Scoop. The database is updated every 30 minutes, ensuring fresh results, newer than even the official scoop app database.
 
 <br/>
 
-
 ### - 🔍 **Searches in names AND descriptions improving the search flexibility.**
 <br/>
+
 Most Scoop search systems such as [Scoop.sh](http://scoop.sh) or [Scoop-Directory](https://rasa.github.io/scoop-directory/search) provide results only referred to the app name. SS can search also in the app descriptions.
 
 <br/>
 
-
 ### - 🔍&🔍 **Match All keywords capability.** 
 <br/>
+
 Most Scoop search systems provide results for a single keyword. SS can search combinations of OR and AND.
 
 <br/>
-
 
 ### - 🔧 **Complex REGEX search patterns for advanced users**
 <br/>
@@ -54,14 +51,12 @@ Most Scoop search systems provide results for a single keyword. SS can search co
 
 <br/>
 
-
 ### - **(音乐) UTF-8 compatible**
 <br/>
 
 **SS** accepts searches in UTF-8 encoding, supporting searches in descriptions when the language uses suplemental Unicode pages. Please note that this feature requires a UTF-8 capable terminal such as Windows Terminal.
 
 <br/>
-
 
 ### - 📝 **Last-manifest filter**
 <br/>
@@ -70,7 +65,6 @@ Typical search utilities provide only the list of matches including all the vers
 
 <br/>
 
-
 ### - 📝 **Color coding for quick reference**
 <br/>
 
@@ -78,19 +72,17 @@ The result is displated with color coding for easy identigication of the matched
 
 <br/>
 
+### - 📝 **Interoperability with other PowerShell scripts**
+<br/>
+
+**SS** can provide the output as a PSObject format so other PowerShell utilities could use the data for other tasks.
+
+<br/>
 
 ### - 📝 **Homepage information**
 <br/>
 
 **SS** has an option that displays the homepage of each manifest. That makes easier to reasearch the source of the app, find details about it, etc.
-
-<br/>
-
-
-### - 📝 **Interoperability with other PowerShell scripts**
-<br/>
-
-**SS** can provide the output as a PSObject format so other PowerShell utilities could use the data for other tasks.
 
 <br/>
 <img width="1162" alt="image" src="https://user-images.githubusercontent.com/22417711/218010286-09080055-dd27-4f10-bc7d-5d05f504e34c.png">
