@@ -71,13 +71,29 @@ Typical search utilities provide only the list of matches including all the vers
 <br/>
 
 
+### - 📝 **Color coding for quick reference**
+<br/>
+
+The result is displated with color coding for easy identigication of the matched words, the official buckets, and the bucket of the newer manifest available for each app.
+
+<br/>
+
+
+### - 📝 **Homepage information**
+<br/>
+
+**SS** has an option that displays the homepage of each manifest. That makes easier to reasearch the source of the app, find details about it, etc.
+
+<br/>
+
+
 ### - 📝 **Interoperability with other PowerShell scripts**
 <br/>
 
 **SS** can provide the output as a PSObject format so other PowerShell utilities could use the data for other tasks.
 
 <br/>
-
+<img width="1162" alt="image" src="https://user-images.githubusercontent.com/22417711/218010286-09080055-dd27-4f10-bc7d-5d05f504e34c.png">
 ____
 
 <br/>
@@ -118,7 +134,7 @@ ____
 
 <br/>
 
-Usage: ss [ [ [ -n ] [ -s | -e ] [ -l ] [ -o ] [ -r ] ] | -h ] [Search_Patterns]
+Usage: ss [ [ [-n] [ -s|-e ] [-l] [-o] [-p] [-r] ] | -h ] [Search_Patterns]
 
  **SS** searches in all the known buckets at a lighning speed. It not only searches
  in the name field, but also in the desscription. Regex and UTF-8 compatible. 
@@ -133,6 +149,7 @@ Usage: ss [ [ [ -n ] [ -s | -e ] [ -l ] [ -o ] [ -r ] ] | -h ] [Search_Patterns]
      -e   Full expanded regex search.
      -l   Search latest versions only.
      -o   Search only in official buckets.
+     -p   Shows homepage for each manifest.
      -r   raw, no color and no header. Outputs data as a PowerShell object.
      -h   Shows this help.
 ```
