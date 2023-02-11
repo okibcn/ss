@@ -150,7 +150,7 @@ function ss {
         $BucketURL = $line.Bucket
         $line.Bucket = $line.Bucket -Replace "(^.*/ScoopInstaller/.*)", "$cOfficial`$1$cNormal"
         $line.Bucket = $line.Bucket -Replace "(^.*/okibcn/ScoopMaster)", "$cSMaster`$1$cNormal"
-        if ($hLocalBuckets[$BucketURL]) {
+        if ( $hLocalBuckets.count -AND $hLocalBuckets[$BucketURL] ) {
             $line.Bucket = $line.Bucket -Replace $BucketURL, $hLocalBuckets[$BucketURL]
         }
     }
