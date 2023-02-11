@@ -70,7 +70,8 @@ function ss {
      "
         return
     }
-    $oldPS=$PSVersionTable -ne 'Core'
+    $oldPS = $PSVersionTable.PSEdition -ne 'Core'
+    Echo "$oldPS"
     $DBfile = "$($env:TEMP)/AllAppsDB.7z"
     if ((-NOT (test-path $DBfile)) -OR (((Get-Date) - (gci $DBfile).LastWriteTime).Minutes -ge 30)) {
         aria2c --allow-overwrite=true https://github.com/okibcn/ScoopMaster/releases/download/Databases/AllAppsDB.7z -d "$env:TEMP" | Out-Null
@@ -80,29 +81,31 @@ function ss {
     $nManifests = $csv.count
 
     # GET FAST LOCAL BUCKETS
-    $hLocalBuckets=@{}
-    gci ../../../buckets/* | % { 
-        $hLocalBuckets.add((gc "$_/.git/config" | Select-String "(?<=url *= *)http.*(?= *$)").Matches.Value,$_.Name)
+    if (!$oRaw) {
+        $hLocalBuckets = @{}
+        gci "$PSScriptRoot/../../../buckets/*" | % { 
+            $hLocalBuckets.add((gc "$_/.git/config" | Select-String "(?<=url *= *)http.*(?= *$)").Matches.Value, $_.Name)
+        }
     }
-
+    # PREFILTER USING SWISS-CHEESE METHOD
     if ($oLast) {
-        $csv = if($oldPS){$csv | Select-String "okibcn/ScoopMaster" } else {$csv | Select-String "okibcn/ScoopMaster" -raw}
+        $csv = if ($oldPS) { $csv | Select-String "okibcn/ScoopMaster" } else { $csv | Select-String "okibcn/ScoopMaster" -raw }
     }
     if ($oOfficial) {
-        $csv = if($oldPS){$csv | Select-String "Scoopinstaller/" } else {$csv | Select-String '"Scoopinstaller/' -raw}
+        $csv = if ($oldPS) { $csv | Select-String "Scoopinstaller/" } else { $csv | Select-String '"Scoopinstaller/' -raw }
     }
     if ($oExact) {
         # Exact name match
-        $csv = if($oldPS){$csv | Select-String "^.$pattern`"" } else {$csv | Select-String "^.$pattern`"" -raw}
+        $csv = if ($oldPS) { $csv | Select-String "^.$pattern`"" } else { $csv | Select-String "^.$pattern`"" -raw }
         if (!$csv) { return }
         $table = (echo "$header"$csv) | ConvertFrom-Csv
     }
     else {
         # prefilter non regex search
-        if (!$oLast -AND !$oOfficial){ $csv = $csv | select -skip 1 }
+        if (!$oLast -AND !$oOfficial) { $csv = $csv | select -skip 1 }
         if (!$oRegex) {
             $pattern | % { 
-                $csv = if($oldPS){$csv | Select-String "$_" } else {$csv | Select-String "$_" -raw}
+                $csv = if ($oldPS) { $csv | Select-String "$_" } else { $csv | Select-String "$_" -raw }
             }
             # $pattern | % { $csv = $csv | Select-String -pattern "$_" -raw }
         }
@@ -125,10 +128,15 @@ function ss {
     }
     # $table | % {$_.Date = Get-Date $_.Date}
     $table | % { $_.bucket = "https://github.com/$($_.bucket)" }
+
+    $tic = get-date
+
+
+    #PRINT OUTPUT
+
     if ($oRaw) {
         return ($table | Select-Object Name, Version, Homepage, Bucket, Description) 
     }
-
     # Colorize if we are not in raw mode
     $pattern | % {
         $pattern_ = $_
@@ -143,14 +151,11 @@ function ss {
         $BucketURL = $line.Bucket
         $line.Bucket = $line.Bucket -Replace "(^.*/ScoopInstaller/.*)", "$cOfficial`$1$cNormal"
         $line.Bucket = $line.Bucket -Replace "(^.*/okibcn/ScoopMaster)", "$cSMaster`$1$cNormal"
-        if ($hLocalBuckets[$BucketURL]){
-                $line.Bucket = $line.Bucket -Replace $BucketURL,$hLocalBuckets[$BucketURL]
+        if ($hLocalBuckets[$BucketURL]) {
+            $line.Bucket = $line.Bucket -Replace $BucketURL, $hLocalBuckets[$BucketURL]
         }
     }
         
-    $tic = get-date
-
-    #PRINT OUTPUT
     if ($oPage) {
         $table | Select-Object Name, Version, Homepage, Bucket, Description |  Format-Table
     }
