@@ -71,7 +71,6 @@ function ss {
         return
     }
     $oldPS = $PSVersionTable.PSEdition -ne 'Core'
-    Echo "$oldPS"
     $DBfile = "$($env:TEMP)/AllAppsDB.7z"
     if ((-NOT (test-path $DBfile)) -OR (((Get-Date) - (gci $DBfile).LastWriteTime).Minutes -ge 30)) {
         aria2c --allow-overwrite=true https://github.com/okibcn/ScoopMaster/releases/download/Databases/AllAppsDB.7z -d "$env:TEMP" | Out-Null
