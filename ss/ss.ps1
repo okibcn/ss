@@ -1,4 +1,4 @@
-#   Scoop Super Search v4.0 2023.02.09
+#   Scoop Super Search v5.0 2023.02.11
 #   (C) 2023 Oscar Lopez
 #   For more information visit: https://github.com/okibcn/ss"
 
@@ -33,13 +33,13 @@ function ss {
         }
     }
     if (($oHelp) -OR (!$oRaw)) {
-        Write-Host " Scoop Super Search v4.0 2023.02.09
+        Write-Host " Scoop Super Search v5.0 2023.02.11
  (C) 2023 Oscar Lopez
  ss -h for help. For more information visit: https://github.com/okibcn/ss"
     }
     if (($oHelp) -OR ($pattern.count -eq 0)) {
         Write-Host "
- Usage: ss [ [ [-n] [ -s|-e ] [-l] [-o] [-r] [-p] ] | -h ] [Search_Patterns]
+ Usage: ss [ [ [-n] [ -s|-e ] [-l] [-o] [-p] [-r] ] | -h ] [Search_Patterns]
 
  ss searches in all the known buckets at a lighning speed. It not only searches 
  in the name field, but also in the desscription. Regex and UTF-8 compatible.
@@ -70,32 +70,44 @@ function ss {
      "
         return
     }
-
+    $oldPS=$PSVersionTable -ne 'Core'
     $DBfile = "$($env:TEMP)/AllAppsDB.7z"
     if ((-NOT (test-path $DBfile)) -OR (((Get-Date) - (gci $DBfile).LastWriteTime).Minutes -ge 30)) {
         aria2c --allow-overwrite=true https://github.com/okibcn/ScoopMaster/releases/download/Databases/AllAppsDB.7z -d "$env:TEMP" | Out-Null
     }
-    $csv = 7z e -so $DBfile AllAppsDB.csv | select-object -skip 1
+    $csv = 7z e -so $DBfile AllAppsDB.csv
+    $header = $csv[0]
     $nManifests = $csv.count
+
+    # GET FAST LOCAL BUCKETS
+    $hLocalBuckets=@{}
+    gci ../../../buckets/* | % { 
+        $hLocalBuckets.add((gc "$_/.git/config" | Select-String "(?<=url *= *)http.*(?= *$)").Matches.Value,$_.Name)
+    }
+
     if ($oLast) {
-        $csv = $csv | Select-String -Pattern "okibcn/ScoopMaster" -raw
+        $csv = if($oldPS){$csv | Select-String "okibcn/ScoopMaster" } else {$csv | Select-String "okibcn/ScoopMaster" -raw}
     }
     if ($oOfficial) {
-        $csv = $csv | Select-String -Pattern '"Scoopinstaller/' -raw
+        $csv = if($oldPS){$csv | Select-String "Scoopinstaller/" } else {$csv | Select-String '"Scoopinstaller/' -raw}
     }
     if ($oExact) {
         # Exact name match
-        $csv = $csv | Select-String -Pattern "^`"$pattern`"" -raw
+        $csv = if($oldPS){$csv | Select-String "^.$pattern`"" } else {$csv | Select-String "^.$pattern`"" -raw}
         if (!$csv) { return }
-        $table = (echo '"Name","Version","Date","Bucket","Description","Homepage"'$csv) | ConvertFrom-Csv
+        $table = (echo "$header"$csv) | ConvertFrom-Csv
     }
     else {
         # prefilter non regex search
+        if (!$oLast -AND !$oOfficial){ $csv = $csv | select -skip 1 }
         if (!$oRegex) {
-            $pattern | % { $csv = $csv | Select-String -pattern "$_" -raw }
+            $pattern | % { 
+                $csv = if($oldPS){$csv | Select-String "$_" } else {$csv | Select-String "$_" -raw}
+            }
+            # $pattern | % { $csv = $csv | Select-String -pattern "$_" -raw }
         }
         if (!$csv) { return }
-        $table = (echo '"Name","Version","Date","Bucket","Description","Homepage"'$csv) | ConvertFrom-Csv
+        $table = (echo "$header"$csv) | ConvertFrom-Csv
         if ($oName) {
             # search name field only
             $pattern | % { 
@@ -112,9 +124,9 @@ function ss {
         }
     }
     # $table | % {$_.Date = Get-Date $_.Date}
-    $table | % { $_.bucket = "http://github.com/$($_.bucket)" }
+    $table | % { $_.bucket = "https://github.com/$($_.bucket)" }
     if ($oRaw) {
-        return ($table | Select-Object Name, Version, Date, Homepage, Bucket, Description) 
+        return ($table | Select-Object Name, Version, Homepage, Bucket, Description) 
     }
 
     # Colorize if we are not in raw mode
@@ -128,9 +140,14 @@ function ss {
         }
     }
     Foreach ($line in $table) {
+        $BucketURL = $line.Bucket
         $line.Bucket = $line.Bucket -Replace "(^.*/ScoopInstaller/.*)", "$cOfficial`$1$cNormal"
         $line.Bucket = $line.Bucket -Replace "(^.*/okibcn/ScoopMaster)", "$cSMaster`$1$cNormal"
+        if ($hLocalBuckets[$BucketURL]){
+                $line.Bucket = $line.Bucket -Replace $BucketURL,$hLocalBuckets[$BucketURL]
+        }
     }
+        
     $tic = get-date
 
     #PRINT OUTPUT
@@ -141,6 +158,6 @@ function ss {
         $table | Select-Object Name, Version, Bucket, Description |  Format-Table
     }
     Write-Host "Legend: $cMatch Search Match$cNormal  - $cOfficial Official Bucket$cNormal  - $cSMaster Most recent Manifest$cNormal"
-    Write-Host "Found $cMatch$($table.count)$cNormal matches out of $cMatch$nManifests$cNormal online manifests in $cMatch$([int]($tic-$tac).Milliseconds)$cNormal ms"
+    Write-Host "Found $cMatch$($table.count)$cNormal matches out of $cMatch$nManifests$cNormal online manifests in $cMatch$([int]($tic-$tac).Milliseconds+[int]($tic-$tac).Second*1000)$cNormal ms"
 }
 return ss @args
