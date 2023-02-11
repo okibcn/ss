@@ -7,7 +7,7 @@ Scoop Super Search, instantaneous results, UTF-8 and regex compatible. The faste
 (Do you like it? give it a ⭐)
 
 <br/>
-<img width="1107" alt="image" src="https://user-images.githubusercontent.com/22417711/217981368-9fd7f08d-048b-4e70-b2ab-7eca9a965ea1.png">
+<img width="1217" alt="image" src="https://user-images.githubusercontent.com/22417711/218279916-1cb8cf7a-2a2f-4335-923b-5fd5a0626386.png">
 
 ____
 
@@ -85,7 +85,14 @@ The result is displated with color coding for easy identigication of the matched
 **SS** has an option that displays the homepage of each manifest. That makes easier to reasearch the source of the app, find details about it, etc.
 
 <br/>
-<img width="1162" alt="image" src="https://user-images.githubusercontent.com/22417711/218010286-09080055-dd27-4f10-bc7d-5d05f504e34c.png">
+
+### - 🌐 **Backward compatible with Windows PowerShell 5.1**
+<br/>
+
+**SS** Is compatible with the powerfull and fast Powershell Core from MS Store, or with the default Windows Powrshell included with Windows 10/11.
+
+<br/>
+
 
 ____
 
