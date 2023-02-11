@@ -33,7 +33,7 @@ ____
 ### - 🔍 **Searches in names AND descriptions improving the search flexibility.**
 <br/>
 
-Most Scoop search systems such as [Scoop.sh](http://scoop.sh) or [Scoop-Directory](https://rasa.github.io/scoop-directory/search) provide results only referred to the app name. SS can search also in the app descriptions.
+Most Scoop search tools provide results only referred to the app name. SS can search also in the app descriptions.
 
 <br/>
 
