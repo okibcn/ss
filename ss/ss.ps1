@@ -1,4 +1,4 @@
-#   Scoop Super Search v5.0 2023.02.11
+#   Scoop Super Search v6.0 2023.02.28
 #   (C) 2023 Oscar Lopez
 #   For more information visit: https://github.com/okibcn/ss"
 
@@ -33,7 +33,7 @@ function ss {
         }
     }
     if (($oHelp) -OR (!$oRaw)) {
-        Write-Host " Scoop Super Search v5.0 2023.02.11
+        Write-Host " Scoop Super Search v6.0 2023.02.28
  (C) 2023 Oscar Lopez
  ss -h for help. For more information visit: https://github.com/okibcn/ss"
     }
@@ -153,6 +153,7 @@ function ss {
         if ( $hLocalBuckets.count -AND $hLocalBuckets[$BucketURL] ) {
             $line.Bucket = $line.Bucket -Replace $BucketURL, $hLocalBuckets[$BucketURL]
         }
+        if ($line.Autoupdate -eq 'A') {$line.Version = "$cAutoupdate$($line.Version)$cNormal"}
     }
         
     if ($oPage) {
@@ -161,7 +162,7 @@ function ss {
     else {
         $table | Select-Object Name, Version, Bucket, Description |  Format-Table
     }
-    Write-Host "Legend: $cMatch Search Match$cNormal  - $cOfficial Official Bucket$cNormal  - $cSMaster Most recent Manifest$cNormal"
+    Write-Host "Legend: $cMatch Search Match$cNormal  - $cAutoupdate Autoupdated$cNormal  - $cOfficial Official Bucket$cNormal  - $cSMaster Most recent Manifest$cNormal"
     Write-Host "Found $cMatch$($table.count)$cNormal matches out of $cMatch$nManifests$cNormal online manifests in $cMatch$([int]($tic-$tac).Milliseconds+[int]($tic-$tac).Second*1000)$cNormal ms"
 }
 return ss @args
