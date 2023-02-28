@@ -123,7 +123,7 @@ function ss {
     #PRINT OUTPUT
 
     if ($oRaw) {
-        return ($table | Select-Object Name, Version, Homepage, Bucket, Description) 
+        return ($table | Select-Object Name, Version, Autoupdate, Homepage, Bucket, Description) 
     }
     # Colorize if we are not in raw mode
     $cNormal = "$([char]27)[37m"      # White
