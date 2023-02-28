@@ -7,7 +7,7 @@ Scoop Super Search, instantaneous results, UTF-8 and regex compatible. The faste
 (Do you like it? give it a ⭐)
 
 <br/>
-<img width="1548" alt="image" src="https://user-images.githubusercontent.com/22417711/221733439-cae5a536-e909-4e22-9859-36ba02a0b2eb.png">
+<img width="1548" alt="image" src="https://user-images.githubusercontent.com/22417711/221735191-c92cf442-b29e-411b-a5c7-2b3ca8de6d50.png">
 
 ____
 
