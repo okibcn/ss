@@ -1,4 +1,4 @@
-#   Scoop Super Search v6.1 2023.02.28
+#   Scoop Super Search v6.2 2023.02.28
 #   (C) 2023 Oscar Lopez
 #   For more information visit: https://github.com/okibcn/ss"
 
@@ -29,7 +29,7 @@ function ss {
         }
     }
     if (($oHelp) -OR (!$oRaw)) {
-        Write-Host " Scoop Super Search v6.1 2023.02.28
+        Write-Host " Scoop Super Search v6.2 2023.02.28
  (C) 2023 Oscar Lopez
  ss -h for help. For more information visit: https://github.com/okibcn/ss"
     }
@@ -162,4 +162,5 @@ function ss {
     Write-Host "Legend: $cMatch Search Match$cNormal  - $cAutoupdate Autoupdated$cNormal  - $cOfficial Official Bucket$cNormal  - $cSMaster Most recent Manifest$cNormal"
     Write-Host "Found $cMatch$($table.count)$cNormal matches out of $cMatch$nManifests$cNormal online manifests in $cMatch$([int]($tic-$tac).Milliseconds+[int]($tic-$tac).Second*1000)$cNormal ms"
 }
+$PSDefaultParameterValues = @{ '*:Encoding' = 'utf8' }
 return ss @args
