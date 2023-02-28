@@ -1,4 +1,4 @@
-#   Scoop Super Search v6.0 2023.02.28
+#   Scoop Super Search v6.1 2023.02.28
 #   (C) 2023 Oscar Lopez
 #   For more information visit: https://github.com/okibcn/ss"
 
@@ -6,10 +6,6 @@
 ## Finds texts in local scoop database
 function ss {
     $tac = get-date
-    $cNormal = "$([char]27)[37m"  # White
-    $cMatch = "$([char]27)[33m"  # Yellow
-    $cOfficial = "$([char]27)[0;35m"  # Cyan
-    $cSMaster = "$([char]27)[36m"  # Purple
     $oHelp = $oName = $oExact = $oLast = $oRaw = $oRegex = $oOfficial = $oPage = $false
     $pattern = foreach ($arg in $args) {
         $arg = [string]$arg
@@ -33,7 +29,7 @@ function ss {
         }
     }
     if (($oHelp) -OR (!$oRaw)) {
-        Write-Host " Scoop Super Search v6.0 2023.02.28
+        Write-Host " Scoop Super Search v6.1 2023.02.28
  (C) 2023 Oscar Lopez
  ss -h for help. For more information visit: https://github.com/okibcn/ss"
     }
@@ -79,13 +75,6 @@ function ss {
     $header = $csv[0]
     $nManifests = $csv.count
 
-    # GET FAST LOCAL BUCKETS
-    if (!$oRaw) {
-        $hLocalBuckets = @{}
-        gci "$PSScriptRoot/../../../buckets/*" | % { 
-            $hLocalBuckets.add((gc "$_/.git/config" | Select-String "(?<=url *= *)http.*(?= *$)").Matches.Value, $_.Name)
-        }
-    }
     # PREFILTER USING SWISS-CHEESE METHOD
     if ($oLast) {
         $csv = if ($oldPS) { $csv | Select-String "okibcn/ScoopMaster" } else { $csv | Select-String "okibcn/ScoopMaster" -raw }
@@ -137,6 +126,14 @@ function ss {
         return ($table | Select-Object Name, Version, Homepage, Bucket, Description) 
     }
     # Colorize if we are not in raw mode
+    $cNormal = "$([char]27)[37m"      # White
+    $cMatch = "$([char]27)[33m"       # Yellow
+    $cOfficial = "$([char]27)[0;35m"  # Cyan
+    $cSMaster = "$([char]27)[36m"     # Purple
+    $cAutoupdate = "$([char]27)[32m"  # Green
+    $hLocalBuckets = @{}
+    $bucketsPath = if ( test-path "$PSScriptRoot/../../../buckets" ) {"$PSScriptRoot/../../../buckets"} else {"~/scoop/buckets"}
+    gci "$bucketsPath/*" | % { $hLocalBuckets.add((gc "$_/.git/config" | Select-String "(?<=url *= *)http.*(?= *$)").Matches.Value, $_.Name) }
     $pattern | % {
         $pattern_ = $_
         Foreach ($line in $table) {
